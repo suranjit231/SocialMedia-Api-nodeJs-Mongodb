@@ -1,0 +1,818 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "description": "API's for social-media application",
+        "title": "Social-media API"
+    },
+    "host": "localhost:3200",
+    
+    "paths": {
+       
+        "/api/users/signup": {
+           
+            "post": {
+                "tags": ["User"],
+                "summary": "User Register",
+                "description": "User register in the social-media application",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User Information",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "gender": {
+                                    "type": "string",
+                                    "enum": ["Male", "Female"]
+                                }
+                            },
+                            "required": ["name", "email", "password", "gender"]
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Invalid input data"
+                    }
+                }
+            }
+        },
+        "/api/users/signin": {
+            "post": {
+                "tags": ["User"],
+                "summary": "User Sign In",
+                "description": "User sign in to the social-media application",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User Credentials",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": ["email", "password"]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Invalid user credentials"
+                    }
+                }
+            }
+        },
+        "/api/users/logout": {
+            "get": {
+                "tags": ["User"],
+                "summary": "User Logout",
+                "description": "User logout from the social-media application",
+                "responses": {
+                    "200": {
+                        "description": "Logout successful"
+                    }
+                },
+                "security": [{"jwt": []}] 
+            }
+        },
+        "/api/users/get-details/{userId}": {
+            "get": {
+                "tags": ["User"],
+                "summary": "Get User Details",
+                "description": "Get details of a user by user ID",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "description": "User ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Invalid user ID"
+                    }
+                },
+                "security": [{"jwt": []}]
+            }
+        },
+        "/api/users/get-all-details": {
+            "get": {
+                "tags": ["User"],
+                "summary": "Get All Users Details",
+                "description": "Get details of all users",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [{"jwt": []}]
+            }
+        },
+        "/api/users/update-details/{userId}": {
+            "put": {
+                "tags": ["User"],
+                "summary": "Update User Details",
+                "description": "Update details of a user by user ID",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "description": "User ID",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "avatar",
+                        "description": "Avatar file to upload",
+                        "required": false,
+                        "type": "file"
+                    },{
+                        "in": "formData",
+                        "name": "name",
+                        "description": "User name",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "gender",
+                        "description": "User gender",
+                        "required": false,
+                        "type": "string",
+                        "enum": ["Male", "Female"]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Invalid user ID or input data"
+                    }
+                },
+                "consumes": ["multipart/form-data"],
+                "produces": ["application/json"],
+                "security": [{"jwt": []}] 
+            }
+        },
+        "/api/posts": {
+            "post": {
+              "tags": ["Post"],
+              "summary": "Create new post",
+              "description": "Create a new post in the social-media application",
+              "parameters": [
+                {
+                  "in": "formData",
+                  "name": "imageUrl",
+                  "description": "Image URL",
+                  "required": true,
+                  "type": "file"
+                },
+                {
+                    "in":"formData",
+                    "name":"caption",
+                    "description":"Title of the post",
+                    "required":"true",
+                    "type":"string"
+
+                }
+               
+              ],
+              "responses": {
+                "201": {
+                  "description": "Post created successfully"
+                },
+                "400": {
+                  "description": "Invalid input data"
+                }
+              },
+              "security": [{"jwt": []}] 
+            }
+          },"/api/posts/update/{postId}": {
+            "put": {
+              "tags": ["Post"],
+              "summary": "Update post",
+              "description": "Update a post in the social-media application",
+              "parameters": [
+                {
+                  "in": "path",
+                  "name": "postId",
+                  "description": "ID of the post to update",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "in": "formData",
+                  "name": "imageUrl",
+                  "description": "Image URL",
+                  "required": false,
+                  "type": "file"
+                },
+                {
+                    "in":"formData",
+                    "name":"caption",
+                    "description":"Title of the post",
+                    "required":"true",
+                    "type":"string"
+
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Post updated successfully"
+                },
+                "400": {
+                  "description": "Invalid post ID or input data"
+                }
+              },
+              "security": [{"jwt": []}] 
+            }
+          },
+          "/api/posts/getone/{postId}": {
+            "get": {
+              "tags": ["Post"],
+              "summary": "Get post by post ID",
+              "description": "Get details of a post by post ID",
+              "parameters": [
+                {
+                  "in": "path",
+                  "name": "postId",
+                  "description": "Post ID",
+                  "required": true,
+                  "type": "string"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "OK"
+                },
+                "400": {
+                  "description": "Invalid post ID"
+                }
+              },
+              "security": [{"jwt": []}] 
+            }
+          },
+          "/api/posts/{postId}": {
+            "delete": {
+              "tags": ["Post"],
+              "summary": "Delete post by post ID",
+              "description": "Delete a post by post ID",
+              "parameters": [
+                {
+                  "in": "path",
+                  "name": "postId",
+                  "description": "Post ID",
+                  "required": true,
+                  "type": "string"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Post deleted successfully"
+                },
+                "400": {
+                  "description": "Invalid post ID"
+                }
+              },
+              "security": [{"jwt": []}] 
+            }
+          },
+          
+          "/api/posts/user-post/{userId}": {
+            "get": {
+              "tags": ["Post"],
+              "summary": "Get posts by user ID",
+              "description": "Get posts of a user by user ID",
+              "parameters": [
+                {
+                  "in": "path",
+                  "name": "userId",
+                  "description": "User ID",
+                  "required": true,
+                  "type": "string"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "type": "array"
+                   
+                  }
+                },
+                "400": {
+                  "description": "Invalid user ID or user has no posts"
+                }
+              },
+              "security": [{"jwt": []}]
+            }
+          },
+
+          "/api/otp/send": {
+            "get": {
+              "tags": ["Reset Password"],
+              "summary": "Get OTP",
+              "description": "User will get OTP in their register email ID",
+              "responses": {
+                "200": {
+                  "description": "OK"
+                  
+                },
+                "400": {
+                  "description": "Invalid user ID or user has no posts"
+                }
+              },
+              "security": [{"jwt": []}]
+            }
+          },
+          "/api/otp/verify":{
+            "post":{
+              "tags":["Reset Password"],
+              "summary":"Verify OTP",
+              "description":"Verify OTP for reset password",
+              "parameters": [
+                {
+                    "in": "body",
+                    "name": "body",
+                    "description": "Verification OTP",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "otp": {
+                                "type": "number"
+                            }
+                        },
+                        "required": ["otp"]
+                    }
+                }
+            ],
+            "responses": {
+              "200": {
+                "description": "OK"
+              },
+              "400": {
+                "description": "Invalid OTP"
+              }
+            },
+            "security": [{"jwt": []}] 
+
+              }
+          },
+          "/api/otp/reset-password": {
+            "post": {
+              "tags": ["Reset Password"],
+              "summary": "Reset Password",
+              "description": "Reset user password after verifying OTP",
+              "parameters": [
+                {
+                  "in": "body",
+                  "name": "body",
+                  "description": "Reset Password Request Body",
+                  "required": true,
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "password": {
+                        "type": "string",
+                        "description": "New password to set for the user"
+                      }
+                     
+                    },
+                    "required": ["password"]
+                  }
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Password Reset Successful",
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "description": "Indicates if the password reset was successful"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Additional message (if any)"
+                      }
+                    }
+                  }
+                },
+                "400": {
+                  "description": "Bad Request - Invalid OTP or password does not meet requirements"
+                }
+              },
+              "security": [{"jwt": []}]
+            }
+          },
+          "/api/likes/{postId}": {
+            "post": {
+              "tags": ["Like"],
+              "summary": "Toggle Like",
+              "description": "Toggle like for a post",
+              "parameters": [
+                {
+                  "in": "path",
+                  "name": "postId",
+                  "description": "ID of the post to toggle like",
+                  "required": true,
+                  "type": "string"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Toggle Like Successful",
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "description": "Indicates if the like was toggled successfully"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Additional message (if any)"
+                      }
+                    }
+                  }
+                },
+                "400": {
+                  "description": "Bad Request - Failed to toggle like"
+                }
+              },
+              "security": [{"jwt": []}]
+            },
+            "get": {
+              "tags": ["Like"],
+              "summary": "Count Likes",
+              "description": "Count likes on a post",
+              "parameters": [
+                {
+                  "in": "path",
+                  "name": "postId",
+                  "description": "ID of the post to count likes",
+                  "required": true,
+                  "type": "string"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Count Likes Successful",
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "likes": {
+                        "type": "number",
+                        "description": "Number of likes on the post"
+                      }
+                    }
+                  }
+                },
+                "400": {
+                  "description": "Bad Request - Failed to count likes"
+                }
+              },
+              "security": [{"jwt": []}]
+            }
+          },
+          "/api/comments/{postId}": {
+            "post": {
+                "tags": ["Comment"],
+                "summary": "Post New Comment",
+                "description": "Post a new comment for a specific post",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "postId",
+                        "description": "ID of the post to which the comment is being added",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Comment information",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "text": {
+                                    "type": "string",
+                                    "description": "Text of the comment"
+                                }
+                            },
+                            "required": ["text"]
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "description": "Indicates if the comment was successfully posted"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "description": "Additional message (if any)"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [{"jwt": []}]
+            }
+        },
+        "/api/comments/getall/{postId}": {
+            "get": {
+                "tags": ["Comment"],
+                "summary": "Get All Comments",
+                "description": "Get all comments for a specific post",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "postId",
+                        "description": "ID of the post for which comments are being fetched",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [{"jwt": []}]
+            }
+        },
+        "/api/comments/{commentId}": {
+            "delete": {
+                "tags": ["Comment"],
+                "summary": "Delete Comment",
+                "description": "Delete a comment by comment ID",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "commentId",
+                        "description": "ID of the comment to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [{"jwt": []}]
+            }
+        },
+        "/api/comments": {
+            "put": {
+                "tags": ["Comment"],
+                "summary": "Update Comment",
+                "description": "Update a comment",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Comment information",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "commentId": {
+                                    "type": "string",
+                                    "description": "ID of the comment to update"
+                                },
+                                "text": {
+                                    "type": "string",
+                                    "description": "New text for the comment"
+                                }
+                            },
+                            "required": ["commentId", "text"]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [{"jwt": []}]
+            }
+        },
+        "/api/comments/get-one/{commentId}": {
+            "get": {
+                "tags": ["Comment"],
+                "summary": "Get One Comment",
+                "description": "Get a single comment by comment ID",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "commentId",
+                        "description": "ID of the comment to retrieve",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [{"jwt": []}]
+            }
+        },
+        "/api/friendship/send": {
+          "post": {
+              "tags": ["Friendship"],
+              "summary": "Send Friend Request",
+              "description": "Send a friend request to another user",
+              "parameters": [
+                  {
+                      "in": "body",
+                      "name": "body",
+                      "description": "Request details",
+                      "required": true,
+                      "schema": {
+                          "type": "object",
+                          "properties": {
+                              "user": {
+                                  "type": "string",
+                                  "description": "ID of the user to whom the request is being sent"
+                              }
+                          },
+                          "required": ["user"]
+                      }
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  },
+                  "400": {
+                      "description": "Bad Request"
+                  }
+              },
+              "security": [{"jwt": []}]
+          }
+      },
+      "/api/friendship/accept/{requestDocId}": {
+          "put": {
+              "tags": ["Friendship"],
+              "summary": "Accept Friend Request",
+              "description": "Accept a friend request by request document ID for this login by using accepter credential",
+              "parameters": [
+                  {
+                      "in": "path",
+                      "name": "requestDocId",
+                      "description": "ID of the request document to accept",
+                      "required": true,
+                      "type": "string"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  },
+                  "400": {
+                      "description": "Bad Request"
+                  }
+              },
+              "security": [{"jwt": []}]
+          }
+      },
+      "/api/friendship/reject/{requestDocId}": {
+          "put": {
+              "tags": ["Friendship"],
+              "summary": "Reject Friend Request",
+              "description": "Reject a friend request by request document ID",
+              "parameters": [
+                  {
+                      "in": "path",
+                      "name": "requestDocId",
+                      "description": "ID of the request document to reject",
+                      "required": true,
+                      "type": "string"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  },
+                  "400": {
+                      "description": "Bad Request"
+                  }
+              },
+              "security": [{"jwt": []}]
+          }
+      },
+      "/api/friendship/getAllFriend": {
+          "get": {
+              "tags": ["Friendship"],
+              "summary": "Get All Friends",
+              "description": "Get all friends of the current user",
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  },
+                  "400": {
+                      "description": "Bad Request"
+                  }
+              },
+              "security": [{"jwt": []}]
+          }
+      },
+      "/api/friendship/getAllStatus": {
+          "get": {
+              "tags": ["Friendship"],
+              "summary": "Get All Friendship Status",
+              "description": "Get the friendship status of all friends of the current user",
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  },
+                  "400": {
+                      "description": "Bad Request"
+                  }
+              },
+              "security": [{"jwt": []}]
+          }
+      },
+      "/api/friendship/getPending-request": {
+          "get": {
+              "tags": ["Friendship"],
+              "summary": "Get All Pending Friend Requests",
+              "description": "Get all pending friend requests of the current user",
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  },
+                  "400": {
+                      "description": "Bad Request"
+                  }
+              },
+              "security": [{"jwt": []}]
+          }
+      }
+    },
+    "securityDefinitions": {
+        "jwt": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
+
+
