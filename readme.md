@@ -1,4 +1,5 @@
 ****Social Media API Documentation*****  //** Please refer to the Swagger documentation for detailed 
+**** hosted-link on render.com***   https://socialmedia-api-nodejs-mongodb.onrender.com/api-docs/
 
 This API, built using( Node.js, Express and Mongodb database ) provides endpoints for a social media application, enabling users to perform various actions such as user registration, authentication, posting, commenting, liking posts, managing friendships, and more.
 
