@@ -16,15 +16,15 @@ export default class OtpRepositry{
         const transporter = nodemailer.createTransport({
             service:"gmail",
             auth:{
-                user: "codingninjas2k16@gmail.com",
-                pass: "slwvvlczduktvhdj",
+                user: process.env.EMAIL,
+                pass: process.env.PASS,
             }
         });
 
         //.. create options for sending sending otp via email
         const mailOptions = {
-            from:"codingninjas2k16@gmail.com",
-            to:"namasudrasuranjit164@gmail.com",//.... it will replaced by user actual email id
+            from:process.env.EMAIL,
+            to:user.email,//.... it will replaced by user actual email id
            // to:user.email,
             subject:"Password reset OTP",
             text: `Your OTP for password reset is: ${otp}`
