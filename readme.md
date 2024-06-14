@@ -1,11 +1,19 @@
-****Social Media API Documentation*****  //** Please refer to the Swagger documentation for detailed 
-**** hosted-link on render.com***   http://socialmedia-api-nodejs-mongodb.onrender.com/api-docs/
+# Social Media API Documentation
 
-This API, built using( Node.js, Express and Mongodb database ) provides endpoints for a social media application, enabling users to perform various actions such as user registration, authentication, posting, commenting, liking posts, managing friendships, and more.
+**Please refer to the Swagger documentation for detailed information.**
 
-****TO USE THIS API PLEASE CONFIGURE DOTENV FILE WITH**** ( DB_URL ) for mongodb  and   ( SECRET_KEY ) for jwt token
+This API, built using Node.js, Express, and MongoDB database, provides endpoints for a social media application, enabling users to perform various actions such as user registration, authentication, posting, commenting, liking posts, managing friendships, and more.
 
-**** install necessary dependency by running :  npm i ****
+## Configuration
+
+**To use this API, please configure the `.env` file with:**
+- `DB_URL` for MongoDB
+- `SECRET_KEY` for JWT token
+
+**Install necessary dependencies by running:**
+```bash
+npm i
+
 
 **Total: 27 api end points**
 
